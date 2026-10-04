@@ -1,13 +1,69 @@
-// REST adapter. Swap each mock body for a fetch to `${API}/...` — the UI only depends on these signatures.
-import { SONGS, ME, FRIEND } from '../data/mock'
-const API = import.meta.env.VITE_API_URL
-const code = () => Array.from({ length: 6 }, () => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.random() * 32 | 0]).join('')
+
+const BASE_URL =
+  import.meta.env.VITE_API_URL || 'https://lovetunes-backend-osos.onrender.com/api'
+
+const API = `${BASE_URL}/v1/master/music`
+
+const request = async (url, options = {}) => {
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+    ...options,
+  })
+
+  if (!response.ok) {
+    const error = await response.text()
+    throw new Error(error || `API Error: ${response.status}`)
+  }
+
+  // Handle empty responses
+  if (response.status === 204) {
+    return null
+  }
+  
+  return response.json()
+}
 
 export const api = {
-  getSongs: async () => SONGS,                                                                                  // GET /songs/home
-  search: async (q) => SONGS.filter((s) => (s.title + s.artist + s.album).toLowerCase().includes(q.toLowerCase())), // GET /search?q=
-  getStreamUrl: async (song) => song.streamUrl,                                                                 // GET /songs/:id/stream
-  createRoom: async () => ({ code: code(), members: [ME] }),                                                    // POST /rooms
-  joinRoom: async (c) => ({ code: c, members: [ME, FRIEND] }),                                                  // POST /rooms/:code/join
-  leaveRoom: async (c) => {},                                                                                   // POST /rooms/:code/leave
+  // GET /api/v1/master/music/home-page/
+  getHomePage: async () => {
+    return request(`${API}/home-page/`)
+  },
+
+  // GET /api/v1/master/music/search/?q=...
+  search: async (q) => {
+    return request(
+      `${API}/search?query=${encodeURIComponent(q)}`
+    )
+  },
+
+
+  // POST /api/v1/master/music/rooms/
+  createRoom: async () => {
+    return request(`${API}/rooms/`, {
+      method: 'POST',
+    })
+  },
+
+  // POST /api/v1/master/music/rooms/:code/join/
+  joinRoom: async (code) => {
+    return request(
+      `${API}/rooms/${encodeURIComponent(code)}/join/`,
+      {
+        method: 'POST',
+      }
+    )
+  },
+
+  // POST /api/v1/master/music/rooms/:code/leave/
+  leaveRoom: async (code) => {
+    return request(
+      `${API}/rooms/${encodeURIComponent(code)}/leave/`,
+      {
+        method: 'POST',
+      }
+    )
+  },
 }
