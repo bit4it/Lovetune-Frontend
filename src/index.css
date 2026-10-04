@@ -1,0 +1,20 @@
+@import "tailwindcss";
+:root{--bg:#0b0b0e;--s1:#16161b;--s2:#1f1f26;--bd:#2a2a33;--mut:#9a9aa8;box-sizing:border-box}
+html,body,#root{height:100%;margin:0}
+body{background:#050507;color:#f5f5f7;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}
+button{cursor:pointer;color:inherit;font:inherit;border:0;background:none;padding:0;transition:transform .15s}button:active{transform:scale(.94)}
+.grad{background:linear-gradient(135deg,#a855f7,#ec4899)}
+.gtext{background:linear-gradient(135deg,#c084fc,#f472b6);-webkit-background-clip:text;color:transparent}
+.hs{display:flex;gap:12px;overflow-x:auto;padding:0 20px;scrollbar-width:none}.hs::-webkit-scrollbar,.ns::-webkit-scrollbar{display:none}.ns{scrollbar-width:none}
+.ib{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%}.ib:hover{background:#ffffff1a}
+.mut{color:var(--mut)}.on{color:#c084fc}
+.btn{height:56px;width:100%;border-radius:16px;font-weight:600;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#a855f7,#ec4899)}
+.btn.ghost{background:var(--s1);border:1px solid var(--bd)}.btn:disabled{opacity:.4}
+.play{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px #a21caf55}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:16px}
+.layer{position:absolute;inset:0;overflow-y:auto;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes float{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:1}100%{transform:translateY(-240px) scale(1.2);opacity:0}}
+@keyframes ring{0%{transform:scale(.7);opacity:.7}100%{transform:scale(2.2);opacity:0}}@keyframes pop{40%{transform:scale(1.4)}}
+.up{animation:up .35s cubic-bezier(.2,.8,.2,1)}.fade{animation:fade .3s}.ring{animation:ring 1.8s infinite}.pop{animation:pop .35s}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
